@@ -1,0 +1,17 @@
+[project]
+name = "vsm-visualizer"
+version = "0.1.0"
+description = "DearPyGui file browser with matplotlib preview via ppms_toolkit"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "dearpygui>=1.11.1",
+  "matplotlib>=3.8.0",
+  "numpy>=1.24.0"
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
