@@ -30,7 +30,7 @@ def run_app(start_dir: Path) -> None:
     dpg.bind_theme(light_theme)
 
 
-    with dpg.window(label="PPMS Data Browser", width=1280, height=720):
+    with dpg.window(label="PPMS Data Browser", width=1280, height=720, no_title_bar=True):
         with dpg.group(horizontal=True):
             with dpg.child_window(width=480, height=680, border=True):
                 dpg.add_text(f"Working directory:\n{state.current_dir}", wrap=360)
