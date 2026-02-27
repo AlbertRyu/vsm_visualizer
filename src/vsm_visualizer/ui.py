@@ -12,6 +12,7 @@ class VisualizerState:
         self.current_dir = start_dir
         self.files: list[Path] = []
         self.selected_files: set[Path] = set()
+        self.file_modes: dict[Path, str] = {}
 
 def run_app(start_dir: Path) -> None:
     state = VisualizerState(start_dir=start_dir)
@@ -100,14 +101,18 @@ def refresh_files(state: VisualizerState) -> None:
                     default_value="MT",
                     tag=mode_tag,
                     horizontal=True,
-                    #callback=on_mode_changed,
-                    #user_data=(state, file_path)
+                    callback=on_mode_select,
+                    user_data=(state, file_path)
                 )
 
     if state.files:
         dpg.set_value("status_text", f"Detected {len(state.files)} data files.")
     else:
         dpg.set_value("status_text", "No .dat/.data files found in current directory.")
+
+def on_mode_select(sender, app_data, user_data):
+    state, file_path = user_data
+    state.file_modes[file_path] = app_data
 
 
 def on_select_file(sender, app_data, user_data):
@@ -120,8 +125,6 @@ def on_select_file(sender, app_data, user_data):
 
     dpg.set_value("selected_file_text", f"Selected: {file_path}")
     dpg.set_value("status_text", f"Selected {file_path}")
-
-
 
 def plot_selected_file(state: VisualizerState) -> None:
 
@@ -148,22 +151,34 @@ def plot_selected_file(state: VisualizerState) -> None:
 
         T = df["Temperature (K)"]
         M = df["Moment (emu)"]
+        H = df['Magnetic Field (Oe)']
+
 
         T_clean = []
         M_clean = []
+        H_clean = []
 
-        for t, mom in zip(T, M):
-            if not (math.isnan(t) or math.isnan(mom)):
+        for t, mom, h in zip(T, M, H):
+            if not (math.isnan(t) or math.isnan(mom) or math.isnan(h)):
                 T_clean.append(t)
                 M_clean.append(mom)
+                H_clean.append(h)
 
         # 🟢 添加一条新曲线
+        if state.file_modes[file_path] == 'MT':
+            x_value = T_clean
+        else:
+            x_value = H_clean
+
         dpg.add_line_series(
-            T_clean,
+            x_value,
             M_clean,
             label=file_path.name,
             parent="y_axis"
         )
+
     dpg.fit_axis_data("x_axis")
     dpg.fit_axis_data("y_axis")
+
+ 
 
