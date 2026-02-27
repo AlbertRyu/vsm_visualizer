@@ -3,21 +3,15 @@ from __future__ import annotations
 from pathlib import Path
 
 import dearpygui.dearpygui as dpg
-import numpy as np
-from matplotlib.backends.backend_agg import FigureCanvasAgg
 
-from .ppms_adapter import PPMSToolkitAdapter, ToolkitAdapterError
+from .vsm_data_processor import Sample, Measurement
 
 
 class VisualizerState:
     def __init__(self, start_dir: Path) -> None:
         self.current_dir = start_dir
-        self.adapter = PPMSToolkitAdapter()
         self.files: list[Path] = []
         self.selected_file: Path | None = None
-        self.texture_tag = "plot_texture"
-        self.image_tag = "plot_image"
-        self.texture_size: tuple[int, int] | None = None
 
 
 def run_app(start_dir: Path) -> None:
@@ -25,8 +19,6 @@ def run_app(start_dir: Path) -> None:
 
     dpg.create_context()
     dpg.create_viewport(title="VSM Data Visualizer", width=1280, height=720)
-    with dpg.texture_registry(tag="texture_registry", show=False):
-        pass
 
     with dpg.window(label="PPMS Data Browser", width=1280, height=720):
         with dpg.group(horizontal=True):
@@ -53,14 +45,21 @@ def run_app(start_dir: Path) -> None:
                 dpg.add_text("", tag="status_text", wrap=360)
 
             with dpg.child_window(width=-1, height=680, border=True):
-                dpg.add_text("Matplotlib Preview", tag="plot_title")
+                dpg.add_text("Temp vs Moment", tag="plot_title")
                 dpg.add_spacer(height=6)
-                dpg.add_button(label="Render Selected File", width=200, callback=lambda: render_selected_file(state))
+                dpg.add_button(label="Render Selected File", width=200, callback=lambda: plot_selected_file(state))
                 dpg.add_spacer(height=8)
                 dpg.add_text("No file selected.", tag="selected_file_text", wrap=820)
                 dpg.add_spacer(height=8)
-                with dpg.group(tag="plot_container"):
-                    dpg.add_text("No plot yet.", tag="plot_placeholder")
+
+                with dpg.plot(label="", height=-1, width=-1):
+
+                    dpg.add_plot_legend()
+
+                    dpg.add_plot_axis(dpg.mvXAxis, label="X", tag="x_axis")
+
+                    with dpg.plot_axis(dpg.mvYAxis, label="Moment (emu)", tag="y_axis"):
+                        dpg.add_line_series([], [], label="Moment", tag="main_series")
 
     dpg.setup_dearpygui()
     refresh_files(state)
@@ -107,58 +106,31 @@ def on_select_file(sender, app_data, user_data):
 
 
 
-def render_selected_file(state: VisualizerState) -> None:
+def plot_selected_file(state: VisualizerState) -> None:
+
+    test_sample = Sample(name='Test Sample', mass=1)
+
     if not state.selected_file:
         dpg.set_value("status_text", "Please select a data file first.")
         return
+    
+    m = Measurement(sample=test_sample, filepath=str(state.selected_file))
+    df = m.dataframe
+    print(df.keys())
 
-    try:
-        fig = state.adapter.get_figure_for_file(state.selected_file)
-        rgba, width, height = figure_to_rgba(fig)
-        upsert_plot_texture(state, rgba, width, height)
-        dpg.set_value("status_text", f"Rendered {state.selected_file.name}")
-    except ToolkitAdapterError as exc:
-        dpg.set_value("status_text", f"Toolkit error: {exc}")
-    except Exception as exc:  # pragma: no cover
-        dpg.set_value("status_text", f"Unexpected error: {exc}")
+    import math
 
+    T = df["Temperature (K)"]
+    M = df["Moment (emu)"]
 
-def figure_to_rgba(fig: object) -> tuple[list[float], int, int]:
-    canvas = FigureCanvasAgg(fig)  # type: ignore[arg-type]
-    canvas.draw()
-    buffer = np.asarray(canvas.buffer_rgba(), dtype=np.uint8)
-    height, width = buffer.shape[0], buffer.shape[1]
-    normalized = (buffer.astype(np.float32) / 255.0).ravel().tolist()
-    return normalized, width, height
+    T_clean = []
+    M_clean = []
 
+    for t, mom in zip(T, M):
+        if not (math.isnan(t) or math.isnan(mom)):
+            T_clean.append(t)
+            M_clean.append(mom)
 
-def upsert_plot_texture(state: VisualizerState, rgba: list[float], width: int, height: int) -> None:
-    if dpg.does_item_exist("plot_placeholder"):
-        dpg.delete_item("plot_placeholder")
-
-    if dpg.does_item_exist(state.texture_tag):
-        if state.texture_size == (width, height):
-            dpg.set_value(state.texture_tag, rgba)
-        else:
-            if dpg.does_item_exist(state.image_tag):
-                dpg.delete_item(state.image_tag)
-            dpg.delete_item(state.texture_tag)
-            dpg.add_dynamic_texture(
-                width=width,
-                height=height,
-                default_value=rgba,
-                tag=state.texture_tag,
-                parent="texture_registry",
-            )
-            dpg.add_image(state.texture_tag, tag=state.image_tag, parent="plot_container")
-    else:
-        dpg.add_dynamic_texture(
-            width=width,
-            height=height,
-            default_value=rgba,
-            tag=state.texture_tag,
-            parent="texture_registry",
-        )
-        dpg.add_image(state.texture_tag, tag=state.image_tag, parent="plot_container")
-
-    state.texture_size = (width, height)
+    dpg.set_value("main_series", [T_clean, M_clean])
+    dpg.fit_axis_data("x_axis")
+    dpg.fit_axis_data("y_axis")

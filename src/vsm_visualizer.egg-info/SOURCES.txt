@@ -1,0 +1,11 @@
+LICENSE
+README.md
+pyproject.toml
+src/vsm_visualizer/__init__.py
+src/vsm_visualizer/ppms_adapter.py
+src/vsm_visualizer/ui.py
+src/vsm_visualizer.egg-info/PKG-INFO
+src/vsm_visualizer.egg-info/SOURCES.txt
+src/vsm_visualizer.egg-info/dependency_links.txt
+src/vsm_visualizer.egg-info/requires.txt
+src/vsm_visualizer.egg-info/top_level.txt

@@ -1,0 +1,43 @@
+Metadata-Version: 2.4
+Name: vsm-visualizer
+Version: 0.1.0
+Summary: DearPyGui file browser with matplotlib preview via ppms_toolkit
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: dearpygui>=1.11.1
+Requires-Dist: matplotlib>=3.8.0
+Requires-Dist: numpy>=1.24.0
+Dynamic: license-file
+
+# vsm_visualizer
+A small form-factor VSM Visualizer for a short look and comparison of the PPMS VSM Data.
+
+## Basic starter app
+
+This repository now includes a basic DearPyGui app that:
+
+- Uses a left-right split layout
+- Left panel: table listing `.dat/.data` files in current directory
+- Right panel: matplotlib preview image rendered from your `ppms_toolkit`
+- Does not implement reader/processing/plotting logic locally
+
+### Run
+
+```bash
+python -m pip install -r requirements.txt
+python app.py
+```
+
+### Notes on `ppms_toolkit` integration
+
+`src/vsm_visualizer/ppms_adapter.py` is the integration point. It currently tries these APIs:
+
+- `ppms_toolkit.plot_file(path)`
+- `ppms_toolkit.plot_dat(path)`
+- `ppms_toolkit.plot_datafile(path)`
+- `ppms_toolkit.create_figure(path)`
+- `ppms_toolkit.build_figure(path)`
+
+Your toolkit plotting entrypoint should return a matplotlib `Figure`.
+If your toolkit uses a different entrypoint name, update `FIGURE_ENTRYPOINT_CANDIDATES` in `PPMSToolkitAdapter`.
