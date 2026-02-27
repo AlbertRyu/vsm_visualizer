@@ -11,8 +11,7 @@ class VisualizerState:
     def __init__(self, start_dir: Path) -> None:
         self.current_dir = start_dir
         self.files: list[Path] = []
-        self.selected_file: Path | None = None
-
+        self.selected_files: set[Path] = set()
 
 def run_app(start_dir: Path) -> None:
     state = VisualizerState(start_dir=start_dir)
@@ -45,21 +44,18 @@ def run_app(start_dir: Path) -> None:
                 dpg.add_text("", tag="status_text", wrap=360)
 
             with dpg.child_window(width=-1, height=680, border=True):
-                dpg.add_text("Temp vs Moment", tag="plot_title")
+                dpg.add_text("Moment vs T", tag="plot_title")
                 dpg.add_spacer(height=6)
                 dpg.add_button(label="Render Selected File", width=200, callback=lambda: plot_selected_file(state))
                 dpg.add_spacer(height=8)
                 dpg.add_text("No file selected.", tag="selected_file_text", wrap=820)
                 dpg.add_spacer(height=8)
 
-                with dpg.plot(label="", height=-1, width=-1):
+                with dpg.plot(label="", tag="main_plot", height=-1, width=-1):
 
                     dpg.add_plot_legend()
-
                     dpg.add_plot_axis(dpg.mvXAxis, label="X", tag="x_axis")
-
-                    with dpg.plot_axis(dpg.mvYAxis, label="Moment (emu)", tag="y_axis"):
-                        dpg.add_line_series([], [], label="Moment", tag="main_series")
+                    dpg.add_plot_axis(dpg.mvYAxis, label="Moment (emu)", tag="y_axis")
 
     dpg.setup_dearpygui()
     refresh_files(state)
@@ -87,6 +83,8 @@ def refresh_files(state: VisualizerState) -> None:
         with dpg.table_row(parent="file_table"):
             dpg.add_selectable(
                 label=relative_label,
+                tag=str(file_path),
+                default_value=False,
                 callback=on_select_file,
                 user_data=(state, file_path)
             )
@@ -100,7 +98,12 @@ def refresh_files(state: VisualizerState) -> None:
 
 def on_select_file(sender, app_data, user_data):
     state, file_path = user_data
-    state.selected_file = file_path
+
+    if app_data:   # 被选中
+        state.selected_files.add(file_path)
+    else:          # 被取消
+        state.selected_files.discard(file_path)
+
     dpg.set_value("selected_file_text", f"Selected: {file_path}")
     dpg.set_value("status_text", f"Selected {file_path}")
 
@@ -110,27 +113,43 @@ def plot_selected_file(state: VisualizerState) -> None:
 
     test_sample = Sample(name='Test Sample', mass=1)
 
-    if not state.selected_file:
+    if not state.selected_files:
         dpg.set_value("status_text", "Please select a data file first.")
         return
+
+    ## Re-generate the plot
+    children = dpg.get_item_children("main_plot", 1)
+    if children:
+        for child in children:
+            dpg.delete_item(child)
+    dpg.add_plot_legend(parent="main_plot")
+    dpg.add_plot_axis(dpg.mvXAxis, label="X", parent="main_plot", tag="x_axis")
+    dpg.add_plot_axis(dpg.mvYAxis, label="Moment (emu)", parent="main_plot", tag="y_axis")
     
-    m = Measurement(sample=test_sample, filepath=str(state.selected_file))
-    df = m.dataframe
-    print(df.keys())
-
     import math
+    for file_path in state.selected_files:
 
-    T = df["Temperature (K)"]
-    M = df["Moment (emu)"]
+        m = Measurement(sample=test_sample, filepath=str(file_path))
+        df = m.dataframe
 
-    T_clean = []
-    M_clean = []
+        T = df["Temperature (K)"]
+        M = df["Moment (emu)"]
 
-    for t, mom in zip(T, M):
-        if not (math.isnan(t) or math.isnan(mom)):
-            T_clean.append(t)
-            M_clean.append(mom)
+        T_clean = []
+        M_clean = []
 
-    dpg.set_value("main_series", [T_clean, M_clean])
+        for t, mom in zip(T, M):
+            if not (math.isnan(t) or math.isnan(mom)):
+                T_clean.append(t)
+                M_clean.append(mom)
+
+        # 🟢 添加一条新曲线
+        dpg.add_line_series(
+            T_clean,
+            M_clean,
+            label=file_path.name,
+            parent="y_axis"
+        )
     dpg.fit_axis_data("x_axis")
     dpg.fit_axis_data("y_axis")
+
