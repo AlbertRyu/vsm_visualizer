@@ -26,9 +26,7 @@ def run_app(start_dir: Path) -> None:
     dpg.create_context()
     dpg.create_viewport(title="VSM Data Visualizer", width=1280, height=720)
 
-    dark_theme = themes.create_theme_imgui_dark()
     light_theme = themes.create_theme_imgui_light()
-
     dpg.bind_theme(light_theme)
 
 
@@ -62,12 +60,10 @@ def run_app(start_dir: Path) -> None:
                 dpg.add_text("", tag="status_text", wrap=360)
 
             with dpg.child_window(width=-1, height=680, border=True):
-                dpg.add_text("VSM Plot", tag="plot_title")
-                dpg.add_spacer(height=6)
                 dpg.add_button(label="Render Selected File", width=200, callback=lambda: plot_selected_file(state))
                 dpg.add_spacer(height=8)
 
-                with dpg.plot(label="Simple Plot", tag="main_plot", height=-1, width=-1):
+                with dpg.plot(label="Simple VSM Plot", tag="main_plot", height=-1, width=-1):
 
                     dpg.add_plot_legend()
                     dpg.add_plot_axis(dpg.mvXAxis, label="X", tag="x_axis")
