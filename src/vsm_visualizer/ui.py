@@ -21,7 +21,7 @@ def run_app(start_dir: Path) -> None:
 
     with dpg.window(label="PPMS Data Browser", width=1280, height=720):
         with dpg.group(horizontal=True):
-            with dpg.child_window(width=380, height=680, border=True):
+            with dpg.child_window(width=480, height=680, border=True):
                 dpg.add_text(f"Working directory:\n{state.current_dir}", wrap=360)
                 dpg.add_spacer(height=6)
                 dpg.add_button(label="Refresh Files", width=160, callback=lambda: refresh_files(state))
@@ -35,11 +35,14 @@ def run_app(start_dir: Path) -> None:
                     borders_innerV=True,
                     borders_outerV=True,
                     row_background=True,
+                    policy=dpg.mvTable_SizingStretchProp,
                     scrollY=True,
                     height=520,
                 ):
                     dpg.add_table_column(label="Data File")
-                    dpg.add_table_column(label="Size (KB)")
+                    dpg.add_table_column(label="Size(MB)")
+                    dpg.add_table_column(label="Mode")
+
                 dpg.add_spacer(height=6)
                 dpg.add_text("", tag="status_text", wrap=360)
 
@@ -78,7 +81,7 @@ def refresh_files(state: VisualizerState) -> None:
         dpg.delete_item(row)
 
     for file_path in state.files:
-        size_kb = file_path.stat().st_size / 1024
+        size_mb = file_path.stat().st_size / 1024 / 1024
         relative_label = str(file_path.relative_to(state.current_dir))
         with dpg.table_row(parent="file_table"):
             dpg.add_selectable(
@@ -88,7 +91,18 @@ def refresh_files(state: VisualizerState) -> None:
                 callback=on_select_file,
                 user_data=(state, file_path)
             )
-            dpg.add_text(f"{size_kb:.1f}")
+            dpg.add_text(f"{size_mb:.1f}")
+            # ⭐ 每一行一个独立 radio group
+            with dpg.group(horizontal=True):
+                mode_tag = f"mode_{file_path}"
+                dpg.add_radio_button(
+                    items=["MT", "MH"],
+                    default_value="MT",
+                    tag=mode_tag,
+                    horizontal=True,
+                    #callback=on_mode_changed,
+                    #user_data=(state, file_path)
+                )
 
     if state.files:
         dpg.set_value("status_text", f"Detected {len(state.files)} data files.")
