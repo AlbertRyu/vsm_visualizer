@@ -5,6 +5,8 @@ from pathlib import Path
 import dearpygui.dearpygui as dpg
 
 from .vsm_data_processor import Sample, Measurement
+from dearpygui_ext import themes
+
 
 
 class VisualizerState:
@@ -14,6 +16,9 @@ class VisualizerState:
         self.selected_files: set[Path] = set()
         self.file_modes: dict[Path, str] = {}
         self.dataframes: dict[Path, dict] = {}
+        self.theme_state = "light"
+
+
 
 def run_app(start_dir: Path) -> None:
     state = VisualizerState(start_dir=start_dir)
@@ -21,12 +26,20 @@ def run_app(start_dir: Path) -> None:
     dpg.create_context()
     dpg.create_viewport(title="VSM Data Visualizer", width=1280, height=720)
 
+    dark_theme = themes.create_theme_imgui_dark()
+    light_theme = themes.create_theme_imgui_light()
+
+    dpg.bind_theme(light_theme)
+
+
     with dpg.window(label="PPMS Data Browser", width=1280, height=720):
         with dpg.group(horizontal=True):
             with dpg.child_window(width=480, height=680, border=True):
                 dpg.add_text(f"Working directory:\n{state.current_dir}", wrap=360)
                 dpg.add_spacer(height=6)
-                dpg.add_button(label="Refresh Files", width=160, callback=lambda: refresh_files(state))
+                with dpg.group(horizontal=True):
+                    dpg.add_button(label="Refresh Files", width=160, callback=lambda: refresh_files(state))
+                    dpg.add_button(label="Toggle Theme", width=140, callback=lambda: toggle_theme(state))
                 dpg.add_spacer(height=6)
                 with dpg.table(
                     tag="file_table",
@@ -65,6 +78,19 @@ def run_app(start_dir: Path) -> None:
     dpg.show_viewport()
     dpg.start_dearpygui()
     dpg.destroy_context()
+
+def toggle_theme(state):
+
+    dark_theme = themes.create_theme_imgui_dark()
+    light_theme = themes.create_theme_imgui_light()
+
+    if state.theme_state == "dark":
+        dpg.bind_theme(light_theme)
+        state.theme_state = 'light'
+        
+    else:
+        dpg.bind_theme(dark_theme)
+        state.theme_state = 'dark'
 
 
 def detect_mode(df):
