@@ -13,6 +13,7 @@ class VisualizerState:
         self.files: list[Path] = []
         self.selected_files: set[Path] = set()
         self.file_modes: dict[Path, str] = {}
+        self.dataframes: dict[Path, dict] = {}
 
 def run_app(start_dir: Path) -> None:
     state = VisualizerState(start_dir=start_dir)
@@ -48,7 +49,7 @@ def run_app(start_dir: Path) -> None:
                 dpg.add_text("", tag="status_text", wrap=360)
 
             with dpg.child_window(width=-1, height=680, border=True):
-                dpg.add_text("Moment vs T", tag="plot_title")
+                dpg.add_text("VSM Plot", tag="plot_title")
                 dpg.add_spacer(height=6)
                 dpg.add_button(label="Render Selected File", width=200, callback=lambda: plot_selected_file(state))
                 dpg.add_spacer(height=8)
@@ -66,6 +67,20 @@ def run_app(start_dir: Path) -> None:
     dpg.destroy_context()
 
 
+def detect_mode(df):
+
+    T = df["Temperature (K)"]
+    H = df["Magnetic Field (Oe)"]
+
+    T_span = max(T) - min(T)
+    H_span = max(H) - min(H)
+
+    if H_span > T_span:
+        return "MH"
+    else:
+        return "MT"
+
+
 def refresh_files(state: VisualizerState) -> None:
     state.files = sorted(
         [
@@ -79,9 +94,18 @@ def refresh_files(state: VisualizerState) -> None:
     for row in rows:
         dpg.delete_item(row)
 
+    
+    test_sample = Sample(name='Test Sample', mass=1)
+
     for file_path in state.files:
         size_mb = file_path.stat().st_size / 1024 / 1024
         relative_label = str(file_path.relative_to(state.current_dir))
+
+        m = Measurement(sample=test_sample, filepath=str(file_path))
+        df = m.dataframe
+        state.dataframes[file_path] = df
+        defaul_mode = detect_mode(df)
+
         with dpg.table_row(parent="file_table"):
             dpg.add_selectable(
                 label=relative_label,
@@ -96,19 +120,47 @@ def refresh_files(state: VisualizerState) -> None:
                 mode_tag = f"mode_{file_path}"
                 dpg.add_radio_button(
                     items=["MT", "MH"],
-                    default_value="MT",
+                    default_value=defaul_mode,
                     tag=mode_tag,
                     horizontal=True,
                     callback=on_mode_select,
                     user_data=(state, file_path)
                 )
-        state.file_modes[file_path] = 'MT'
+        state.file_modes[file_path] = defaul_mode
 
     if state.files:
         dpg.set_value("status_text", f"Detected {len(state.files)} data files.")
     else:
         dpg.set_value("status_text", "No .dat/.data files found in current directory.")
 
+
+def smart_labels(paths):
+    # ⭐ 只有一个文件 → 直接显示文件名
+    if len(paths) == 1:
+        return [paths[0].stem]
+
+    parts = [p.parts for p in paths]
+
+    # 找共同前缀长度
+    prefix_len = 0
+
+    for i in range(min(len(p) for p in parts)):
+
+        column = {p[i] for p in parts}
+
+        if len(column) == 1:
+            prefix_len += 1
+        else:
+            break
+
+    # 删除共同前缀
+    labels = [
+        "/".join(p[prefix_len:]).replace(".DAT","")
+        for p in parts
+    ]
+
+    return labels
+    
 def on_mode_select(sender, app_data, user_data):
     state, file_path = user_data
     state.file_modes[file_path] = app_data
@@ -122,12 +174,9 @@ def on_select_file(sender, app_data, user_data):
     else:          # 被取消
         state.selected_files.discard(file_path)
 
-    dpg.set_value("selected_file_text", f"Selected: {file_path}")
     dpg.set_value("status_text", f"Selected {file_path}")
 
 def plot_selected_file(state: VisualizerState) -> None:
-
-    test_sample = Sample(name='Test Sample', mass=1)
 
     if not state.selected_files:
         dpg.set_value("status_text", "Please select a data file first.")
@@ -156,10 +205,11 @@ def plot_selected_file(state: VisualizerState) -> None:
     dpg.add_plot_axis(dpg.mvYAxis, label="Moment (emu)", parent="main_plot", tag="y_axis")
     
     import math
-    for file_path in state.selected_files:
+    selected = list(state.selected_files)
+    labels = smart_labels(selected)
+    for file_path, label in zip(selected, labels):
 
-        m = Measurement(sample=test_sample, filepath=str(file_path))
-        df = m.dataframe
+        df = state.dataframes[file_path]
 
         T = df["Temperature (K)"]
         M = df["Moment (emu)"]
@@ -185,7 +235,7 @@ def plot_selected_file(state: VisualizerState) -> None:
         dpg.add_line_series(
             x_value,
             M_clean,
-            label=file_path.name,
+            label=label,
             parent="y_axis"
         )
 
