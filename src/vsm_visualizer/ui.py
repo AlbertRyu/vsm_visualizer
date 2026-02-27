@@ -52,10 +52,8 @@ def run_app(start_dir: Path) -> None:
                 dpg.add_spacer(height=6)
                 dpg.add_button(label="Render Selected File", width=200, callback=lambda: plot_selected_file(state))
                 dpg.add_spacer(height=8)
-                dpg.add_text("No file selected.", tag="selected_file_text", wrap=820)
-                dpg.add_spacer(height=8)
 
-                with dpg.plot(label="", tag="main_plot", height=-1, width=-1):
+                with dpg.plot(label="Simple Plot", tag="main_plot", height=-1, width=-1):
 
                     dpg.add_plot_legend()
                     dpg.add_plot_axis(dpg.mvXAxis, label="X", tag="x_axis")
@@ -104,6 +102,7 @@ def refresh_files(state: VisualizerState) -> None:
                     callback=on_mode_select,
                     user_data=(state, file_path)
                 )
+        state.file_modes[file_path] = 'MT'
 
     if state.files:
         dpg.set_value("status_text", f"Detected {len(state.files)} data files.")
@@ -132,6 +131,19 @@ def plot_selected_file(state: VisualizerState) -> None:
 
     if not state.selected_files:
         dpg.set_value("status_text", "Please select a data file first.")
+        return
+    
+    # Check if user choosed multiple mode
+    modes = {
+        state.file_modes.get(file_path, "MT")
+        for file_path in state.selected_files
+    }
+
+    if len(modes) > 1:
+        dpg.set_value(
+            "status_text",
+            "Error: Selected files contain mixed modes (MT & MH). Please select files with the same mode."
+        )
         return
 
     ## Re-generate the plot
