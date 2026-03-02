@@ -6,7 +6,7 @@ Requires-Python: >=3.10
 Description-Content-Type: text/markdown
 License-File: LICENSE
 Requires-Dist: dearpygui>=1.11.1
-Requires-Dist: matplotlib>=3.8.0
+Requires-Dist: dearpygui-ext>=2.0.0
 Requires-Dist: numpy>=1.24.0
 Dynamic: license-file
 
