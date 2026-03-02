@@ -1,2 +1,7 @@
 __pycache__/
 *.pyc
+.DS_Store
+*.exe
+*.xml
+# Python egg-info
+*.egg-info/
