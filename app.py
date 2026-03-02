@@ -1,6 +1,15 @@
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
+
+import sys
+import os
+
+def get_base_path():
+    if getattr(sys, 'frozen', False):
+        return os.path.dirname(sys.executable)
+    return os.path.dirname(__file__)
+
+ROOT = get_base_path()
 
 from vsm_visualizer.ui import run_app
 
