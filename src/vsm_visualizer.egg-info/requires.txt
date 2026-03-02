@@ -1,2 +1,0 @@
-dearpygui>=1.11.1
-numpy>=1.24.0
