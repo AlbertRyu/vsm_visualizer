@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from pathlib import Path
-
 import dearpygui.dearpygui as dpg
 
 from .vsm_data_processor import Sample, Measurement
@@ -9,24 +8,25 @@ import vsm_visualizer
 from dearpygui_ext import themes
 
 import ctypes
+import platform
 
-# 获取Windows真实缩放比例（推荐方式）
-try:
-    ctypes.windll.shcore.SetProcessDpiAwareness(1)  # 设为Per Monitor Aware
-    dpi_scale = ctypes.windll.user32.GetDpiForSystem() / 96.0
-except:
+print("THIS IS MY MODIFIED UI.PY")
+
+if platform.system() == "Windows":
+    try:
+        ctypes.windll.shcore.SetProcessDpiAwareness(1)
+        dpi_scale = ctypes.windll.user32.GetDpiForSystem() / 96.0
+    except Exception:
+        dpi_scale = 1.0
+else:
     dpi_scale = 1.0
 
 print("DPI scale:", dpi_scale)  # 通常是1.0 / 1.25 / 1.5 / 2.0
 
-import sys
-from pathlib import Path
-
-
-
 class VisualizerState:
     def __init__(self, start_dir: Path) -> None:
-        self.current_dir = start_dir
+        self.current_dir = Path(start_dir) # Ensure Path is stored
+        print(self.current_dir)
         self.files: list[Path] = []
         self.selected_files: set[Path] = set()
         self.file_modes: dict[Path, str] = {}
@@ -39,6 +39,8 @@ print(ICON_PATH)
 
 
 def run_app(start_dir: Path) -> None:
+    print("ROOT type:", type(start_dir), "value:", start_dir)  # line 12
+
     state = VisualizerState(start_dir=start_dir)
 
     dpg.create_context()
