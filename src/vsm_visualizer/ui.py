@@ -10,8 +10,6 @@ from dearpygui_ext import themes
 import ctypes
 import platform
 
-print("THIS IS MY MODIFIED UI.PY")
-
 if platform.system() == "Windows":
     try:
         ctypes.windll.shcore.SetProcessDpiAwareness(1)
@@ -35,12 +33,10 @@ class VisualizerState:
 
 
 ICON_PATH = Path(vsm_visualizer.__file__).parent / "assets" / "vsm_logo.ico"
-print(ICON_PATH)
+print(f"Icon detected {ICON_PATH}")
 
 
 def run_app(start_dir: Path) -> None:
-    print("ROOT type:", type(start_dir), "value:", start_dir)  # line 12
-
     state = VisualizerState(start_dir=start_dir)
 
     dpg.create_context()
@@ -170,6 +166,7 @@ def refresh_files(state: VisualizerState) -> None:
         m = Measurement(sample=test_sample, filepath=str(file_path))
         df = m.dataframe
         state.dataframes[file_path] = df
+        print(f'Process {file_path}')
         defaul_mode = detect_mode(df)
 
         with dpg.table_row(parent="file_table"):
