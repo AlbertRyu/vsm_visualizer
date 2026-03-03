@@ -1,0 +1,356 @@
+LOG 0 1 60.00 2047 16383 65535 "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_Sample1_new_batch_axis_1_LogVsmSeq.dat" "" "" ""
+REM 
+REM ============================ M vs T - ZFC, FC under 1000 Oe ============================
+TMP TEMP 300.000000 20.000000 0
+FLD FIELD 0.0 100.0 2 0
+WAI WAITFOR 10 1 1 0 0 0
+REM 
+TMP TEMP 2.000000 20.000000 0
+WAI WAITFOR 300 1 0 0 0 0
+REM 
+FLD FIELD 1000.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MT_ZFC_at_1000Oe.dat" 0 0 ""
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 2 13 1 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 13 23 1 1 25 50 0 2 0 1 0 "A/C,1,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 23 300 4 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MT_FC_at_1000Oe.dat" 0 0 ""
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 300 23 4 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 23 13 1 1 25 50 0 2 0 1 0 "A/C,1,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 13 2 1 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+REM +++++++++++++++++++++++++++   M-T at 1T   ++++++++++++++++++++++++
+TMP TEMP 300.000000 20.000000 0
+FLD FIELD 0.0 100.0 2 0
+WAI WAITFOR 10 1 1 0 0 0
+REM 
+TMP TEMP 2.000000 20.000000 0
+WAI WAITFOR 300 1 0 0 0 0
+REM 
+FLD FIELD 10000.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MT_ZFC_at_1T.dat" 0 0 ""
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 2 13 1 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 13 23 1 1 25 50 0 2 0 1 0 "A/C,1,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 23 300 4 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MT_FC_at_1T.dat" 0 0 ""
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 300 23 4 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 23 13 1 1 25 50 0 2 0 1 0 "A/C,1,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 13 2 1 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+REM +++++++++++++++++++++++++++   M-T at 4T   ++++++++++++++++++++++++
+TMP TEMP 300.000000 20.000000 0
+FLD FIELD 0.0 100.0 2 0
+WAI WAITFOR 10 1 1 0 0 0
+REM 
+TMP TEMP 2.000000 20.000000 0
+WAI WAITFOR 300 1 0 0 0 0
+REM 
+FLD FIELD 40000.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MT_ZFC_at_4T.dat" 0 0 ""
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 2 13 1 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 13 23 1 1 25 50 0 2 0 1 0 "A/C,1,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 23 300 4 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MT_FC_at_4T.dat" 0 0 ""
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 300 23 4 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 23 13 1 1 25 50 0 2 0 1 0 "A/C,1,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 13 2 1 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 10000.0 100.0 0 0
+WAI WAITFOR 10 1 1 0 0 0
+REM 
+REM +++++++++++++++++++++++++++   M-T at 8T   ++++++++++++++++++++++++
+TMP TEMP 300.000000 20.000000 0
+FLD FIELD 0.0 100.0 2 0
+WAI WAITFOR 10 1 1 0 0 0
+REM 
+TMP TEMP 2.000000 20.000000 0
+WAI WAITFOR 300 1 0 0 0 0
+REM 
+FLD FIELD 80000.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MT_ZFC_at_8T.dat" 0 0 ""
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 2 13 1 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 13 23 1 1 25 50 0 2 0 1 0 "A/C,1,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 23 300 4 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MT_FC_at_8T.dat" 0 0 ""
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 300 23 4 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 23 13 1 1 25 50 0 2 0 1 0 "A/C,1,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 13 2 1 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 10000.0 100.0 0 0
+WAI WAITFOR 10 1 1 0 0 0
+REM 
+REM +++++++++++++++++++++++++++   M-T at 10T   ++++++++++++++++++++++++
+TMP TEMP 300.000000 20.000000 0
+FLD FIELD 0.0 100.0 2 0
+WAI WAITFOR 10 1 1 0 0 0
+REM 
+TMP TEMP 2.000000 20.000000 0
+WAI WAITFOR 300 1 0 0 0 0
+REM 
+FLD FIELD 100000.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MT_ZFC_at_10T.dat" 0 0 ""
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 2 13 1 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 13 23 1 1 25 50 0 2 0 1 0 "A/C,1,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 23 300 4 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MT_FC_at_10T.dat" 0 0 ""
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 300 23 4 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 23 13 1 1 25 50 0 2 0 1 0 "A/C,1,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 13 2 1 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 10000.0 100.0 0 0
+WAI WAITFOR 10 1 1 0 0 0
+REM 
+REM +++++++++++++++++++++++++++   M-T at 12T   ++++++++++++++++++++++++
+TMP TEMP 300.000000 20.000000 0
+FLD FIELD 0.0 100.0 2 0
+WAI WAITFOR 10 1 1 0 0 0
+REM 
+TMP TEMP 2.000000 20.000000 0
+WAI WAITFOR 300 1 0 0 0 0
+REM 
+FLD FIELD 120000.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MT_ZFC_at_12T.dat" 0 0 ""
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 2 13 1 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 13 23 1 1 25 50 0 2 0 1 0 "A/C,1,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 23 300 4 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MT_FC_at_12T.dat" 0 0 ""
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 300 23 4 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 23 13 1 1 25 50 0 2 0 1 0 "A/C,1,10,10,0" "Q/M,0," 
+VSMMT 1 7 0 0 0 2 40 1 0 2 0 13 2 1 1 25 50 0 2 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 10000.0 100.0 0 0
+WAI WAITFOR 10 1 1 0 0 0
+REM 
+REM ============================ M vs H  at 2 K ============================
+TMP TEMP 2.000000 5.000000 1
+FLD FIELD 0.0 100.0 2 0
+WAI WAITFOR 300 1 1 0 0 0
+VSMLS 1 0 0 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MH_at_2K.dat" 0 0 ""
+VSMMH 1 7 0 0 0 2 40 1 0 2 0 5 7 -140000 0 140000 100 1 25 50 0 2 0 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 0.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM ============================ M vs H  at 3 K ============================
+TMP TEMP 3.000000 5.000000 1
+WAI WAITFOR 300 1 1 0 0 0
+VSMLS 1 0 0 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MH_at_3K.dat" 0 0 ""
+VSMMH 1 7 0 0 0 2 40 1 0 2 0 5 7 -140000 0 140000 100 1 25 50 0 2 0 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 0.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM ============================ M vs H  at 4 K ============================
+TMP TEMP 4.000000 5.000000 1
+WAI WAITFOR 300 1 1 0 0 0
+VSMLS 1 0 0 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MH_at_4K.dat" 0 0 ""
+VSMMH 1 7 0 0 0 2 40 1 0 2 0 5 7 -140000 0 140000 100 1 25 50 0 2 0 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 0.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM ============================ M vs H  at 5 K ============================
+TMP TEMP 5.000000 5.000000 1
+WAI WAITFOR 300 1 1 0 0 0
+VSMLS 1 0 0 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MH_at_5K.dat" 0 0 ""
+VSMMH 1 7 0 0 0 2 40 1 0 2 0 5 7 -140000 0 140000 100 1 25 50 0 2 0 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 0.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM ============================ M vs H  at 6 K ============================
+TMP TEMP 6.000000 5.000000 1
+WAI WAITFOR 300 1 1 0 0 0
+VSMLS 1 0 0 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MH_at_6K.dat" 0 0 ""
+VSMMH 1 7 0 0 0 2 40 1 0 2 0 5 7 -140000 0 140000 100 1 25 50 0 2 0 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 0.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM ============================ M vs H  at 7 K ============================
+TMP TEMP 7.000000 5.000000 1
+WAI WAITFOR 300 1 1 0 0 0
+VSMLS 1 0 0 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MH_at_7K.dat" 0 0 ""
+VSMMH 1 7 0 0 0 2 40 1 0 2 0 5 7 -140000 0 140000 100 1 25 50 0 2 0 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 0.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM ============================ M vs H  at 8 K ============================
+TMP TEMP 8.000000 5.000000 1
+WAI WAITFOR 300 1 1 0 0 0
+VSMLS 1 0 0 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MH_at_8K.dat" 0 0 ""
+VSMMH 1 7 0 0 0 2 40 1 0 2 0 5 7 -140000 0 140000 100 1 25 50 0 2 0 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 0.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM ============================ M vs H  at 9 K ============================
+TMP TEMP 9.000000 5.000000 1
+WAI WAITFOR 300 1 1 0 0 0
+VSMLS 1 0 0 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MH_at_9K.dat" 0 0 ""
+VSMMH 1 7 0 0 0 2 40 1 0 2 0 5 7 -140000 0 140000 100 1 25 50 0 2 0 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 0.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM ============================ M vs H  at 10 K ============================
+TMP TEMP 10.000000 5.000000 1
+WAI WAITFOR 300 1 1 0 0 0
+VSMLS 1 0 0 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MH_at_10K.dat" 0 0 ""
+VSMMH 1 7 0 0 0 2 40 1 0 2 0 5 7 -140000 0 140000 100 1 25 50 0 2 0 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 0.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM ============================ M vs H  at 11 K ============================
+TMP TEMP 11.000000 5.000000 1
+WAI WAITFOR 300 1 1 0 0 0
+VSMLS 1 0 0 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MH_at_11K.dat" 0 0 ""
+VSMMH 1 7 0 0 0 2 40 1 0 2 0 5 7 -140000 0 140000 100 1 25 50 0 2 0 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 0.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM ============================ M vs H  at 12 K ============================
+TMP TEMP 12.000000 5.000000 1
+WAI WAITFOR 300 1 1 0 0 0
+VSMLS 1 0 0 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MH_at_12K.dat" 0 0 ""
+VSMMH 1 7 0 0 0 2 40 1 0 2 0 5 7 -140000 0 140000 100 1 25 50 0 2 0 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 0.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM ============================ M vs H  at 13 K ============================
+TMP TEMP 13.000000 5.000000 1
+WAI WAITFOR 300 1 1 0 0 0
+VSMLS 1 0 0 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MH_at_13K.dat" 0 0 ""
+VSMMH 1 7 0 0 0 2 40 1 0 2 0 5 7 -140000 0 140000 100 1 25 50 0 2 0 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 0.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM ============================ M vs H  at 14 K ============================
+TMP TEMP 14.000000 5.000000 1
+WAI WAITFOR 300 1 1 0 0 0
+VSMLS 1 0 0 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MH_at_14K.dat" 0 0 ""
+VSMMH 1 7 0 0 0 2 40 1 0 2 0 5 7 -140000 0 140000 100 1 25 50 0 2 0 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 0.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM ============================ M vs H  at 15 K ============================
+TMP TEMP 15.000000 5.000000 1
+WAI WAITFOR 300 1 1 0 0 0
+VSMLS 1 0 0 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MH_at_15K.dat" 0 0 ""
+VSMMH 1 7 0 0 0 2 40 1 0 2 0 5 7 -140000 0 140000 100 1 25 50 0 2 0 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 0.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM ============================ M vs H  at 16 K ============================
+TMP TEMP 16.000000 5.000000 1
+WAI WAITFOR 300 1 1 0 0 0
+VSMLS 1 0 0 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MH_at_16K.dat" 0 0 ""
+VSMMH 1 7 0 0 0 2 40 1 0 2 0 5 7 -140000 0 140000 100 1 25 50 0 2 0 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 0.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM ============================ M vs H  at 17 K ============================
+TMP TEMP 17.000000 5.000000 1
+WAI WAITFOR 300 1 1 0 0 0
+VSMLS 1 0 0 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MH_at_17K.dat" 0 0 ""
+VSMMH 1 7 0 0 0 2 40 1 0 2 0 5 7 -140000 0 140000 100 1 25 50 0 2 0 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 0.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM ============================ M vs H  at 18 K ============================
+TMP TEMP 18.000000 5.000000 1
+WAI WAITFOR 300 1 1 0 0 0
+VSMLS 1 0 0 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MH_at_18K.dat" 0 0 ""
+VSMMH 1 7 0 0 0 2 40 1 0 2 0 5 7 -140000 0 140000 100 1 25 50 0 2 0 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 0.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM ============================ M vs H  at 19 K ============================
+TMP TEMP 19.000000 5.000000 1
+WAI WAITFOR 300 1 1 0 0 0
+VSMLS 1 0 0 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MH_at_19K.dat" 0 0 ""
+VSMMH 1 7 0 0 0 2 40 1 0 2 0 5 7 -140000 0 140000 100 1 25 50 0 2 0 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 0.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM ============================ M vs H  at 20 K ============================
+TMP TEMP 20.000000 5.000000 1
+WAI WAITFOR 300 1 1 0 0 0
+VSMLS 1 0 0 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MH_at_20K.dat" 0 0 ""
+VSMMH 1 7 0 0 0 2 40 1 0 2 0 5 7 -140000 0 140000 100 1 25 50 0 2 0 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 0.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM ============================ M vs H  at 25 K ============================
+TMP TEMP 25.000000 5.000000 1
+WAI WAITFOR 300 1 1 0 0 0
+VSMLS 1 0 0 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MH_AT_25K.DAT" 0 0 ""
+VSMMH 1 7 0 0 0 2 40 1 0 2 0 5 7 -140000 0 140000 100 1 25 50 0 2 0 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 0.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM ============================ M vs H  at 30 K ============================
+TMP TEMP 30.000000 5.000000 1
+WAI WAITFOR 300 1 1 0 0 0
+VSMLS 1 0 0 0 0 0
+REM 
+VSMDF "C:\Users\QDUser\Documents\DynaCool-Messungen\Yunxiao LIU\CCSO\Sample-1-New-Batch\axis-1-FullDataSet\CCSO_axis_1_MH_AT_30K.DAT" 0 0 ""
+VSMMH 1 7 0 0 0 2 40 1 0 2 0 5 7 -140000 0 140000 100 1 25 50 0 2 0 0 1 0 "A/C,0,10,10,0" "Q/M,0," 
+REM 
+FLD FIELD 0.0 100.0 1 0
+WAI WAITFOR 10 1 1 0 0 0
+REM 
+FLD FIELD 0.0 100.0 0 0
+WAI WAITFOR 10 1 1 0 0 0
+REM ************* END ***********
+FLD FIELD 10000.0 100.0 0 0
+TMP TEMP 300.000000 20.000000 0
+WAI WAITFOR 30 0 1 0 0 0
+FLD FIELD 0.0 200.0 0 0
+WAI WAITFOR 30 0 1 0 0 0
+WAI WAITFOR 1800 1 1 0 0 0
+LOG 1 ""
