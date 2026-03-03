@@ -1,17 +1,21 @@
 from pathlib import Path
-
-
 import sys
 import os
 
-def get_base_path():
-    if getattr(sys, 'frozen', False):
-        return os.path.dirname(sys.executable)
-    return os.path.dirname(__file__)
+print('something')
+def get_exe_dir():
+    if "__compiled__" in globals():
+        return Path(sys.argv[0]).resolve().parent
+    return Path(__file__).resolve().parent
 
-ROOT = get_base_path()
+ROOT = get_exe_dir()
+print(ROOT)
+
 
 from vsm_visualizer.ui import run_app
 
 if __name__ == "__main__":
+    print(ROOT)
+
     run_app(start_dir=ROOT)
+    

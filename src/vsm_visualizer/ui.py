@@ -1,17 +1,32 @@
 from __future__ import annotations
 
 from pathlib import Path
-
 import dearpygui.dearpygui as dpg
 
 from .vsm_data_processor import Sample, Measurement
+import vsm_visualizer
 from dearpygui_ext import themes
 
+import ctypes
+import platform
 
+print("THIS IS MY MODIFIED UI.PY")
+
+if platform.system() == "Windows":
+    try:
+        ctypes.windll.shcore.SetProcessDpiAwareness(1)
+        dpi_scale = ctypes.windll.user32.GetDpiForSystem() / 96.0
+    except Exception:
+        dpi_scale = 1.0
+else:
+    dpi_scale = 1.0
+
+print("DPI scale:", dpi_scale)  # 通常是1.0 / 1.25 / 1.5 / 2.0
 
 class VisualizerState:
     def __init__(self, start_dir: Path) -> None:
-        self.current_dir = start_dir
+        self.current_dir = Path(start_dir) # Ensure Path is stored
+        print(self.current_dir)
         self.files: list[Path] = []
         self.selected_files: set[Path] = set()
         self.file_modes: dict[Path, str] = {}
@@ -19,56 +34,85 @@ class VisualizerState:
         self.theme_state = "light"
 
 
+ICON_PATH = Path(vsm_visualizer.__file__).parent / "assets" / "vsm_logo.ico"
+print(ICON_PATH)
+
 
 def run_app(start_dir: Path) -> None:
+    print("ROOT type:", type(start_dir), "value:", start_dir)  # line 12
+
     state = VisualizerState(start_dir=start_dir)
 
     dpg.create_context()
-    dpg.create_viewport(title="VSM Data Visualizer", width=1280, height=720)
+    dpg.create_viewport(title="VSM Data Visualizer", width=1440, height=800, small_icon=str(ICON_PATH), large_icon=str(ICON_PATH))
+
+    FONT_PATH = Path(vsm_visualizer.__file__).parent / "assets" / "Roboto-Medium.ttf"
+    with dpg.font_registry():
+        default_font = dpg.add_font(str(FONT_PATH),  int(13 * dpi_scale))
+    dpg.bind_font(default_font)
+    print(f"FONT PATH exist? {FONT_PATH.exists()}")
 
     light_theme = themes.create_theme_imgui_light()
     dpg.bind_theme(light_theme)
 
 
-    with dpg.window(label="PPMS Data Browser", width=1280, height=720, no_title_bar=True):
-        with dpg.group(horizontal=True):
-            with dpg.child_window(width=480, height=680, border=True):
-                dpg.add_text(f"Working directory:\n{state.current_dir}", wrap=360)
-                dpg.add_spacer(height=6)
-                with dpg.group(horizontal=True):
-                    dpg.add_button(label="Refresh Files", width=160, callback=lambda: refresh_files(state))
-                    dpg.add_button(label="Toggle Theme", width=140, callback=lambda: toggle_theme(state))
-                dpg.add_spacer(height=6)
-                with dpg.table(
-                    tag="file_table",
-                    header_row=True,
-                    resizable=True,
-                    borders_innerH=True,
-                    borders_outerH=True,
-                    borders_innerV=True,
-                    borders_outerV=True,
-                    row_background=True,
-                    policy=dpg.mvTable_SizingStretchProp,
-                    scrollY=True,
-                    height=520,
-                ):
-                    dpg.add_table_column(label="Data File")
-                    dpg.add_table_column(label="Size(MB)")
-                    dpg.add_table_column(label="Mode")
+    with dpg.window(tag="Main", width=1280, height=720, 
+                    no_title_bar=True,
+                    no_move=True,
+                    no_resize=True,
+                    no_collapse=True,
+                    no_close=True,
+                    no_background=False):
+        with dpg.table(
+            resizable=True,
+            policy=dpg.mvTable_SizingStretchProp,
+            borders_innerV=True,
+            header_row=False):
+                
+            dpg.add_table_column(init_width_or_weight=0.5)
+            dpg.add_table_column(init_width_or_weight=0.5)
+            with dpg.table_row():
 
-                dpg.add_spacer(height=6)
-                dpg.add_text("", tag="status_text", wrap=360)
+                with dpg.child_window(width=-1, height=-1, border=True):
+                    dpg.add_text(f"Working directory:\n{state.current_dir}", wrap=360)
+                    dpg.add_spacer(height=6)
+                    with dpg.group(horizontal=True):
+                        dpg.add_button(label="Refresh Files", width=160, callback=lambda: refresh_files(state))
+                        dpg.add_button(label="Toggle Theme", width=140, callback=lambda: toggle_theme(state))
+                    dpg.add_spacer(height=6)
+                    with dpg.table(
+                        tag="file_table",
+                        header_row=True,
+                        resizable=True,
+                        borders_innerH=True,
+                        borders_outerH=True,
+                        borders_innerV=True,
+                        borders_outerV=True,
+                        row_background=True,
+                        policy=dpg.mvTable_SizingStretchProp,
+                        scrollY=True,
+                        height=520,
+                    ):
+                        dpg.add_table_column(label="Data File")
+                        dpg.add_table_column(label="Size(MB)")
+                        dpg.add_table_column(label="Mode")
 
-            with dpg.child_window(width=-1, height=680, border=True):
-                dpg.add_button(label="Render Selected File", width=200, callback=lambda: plot_selected_file(state))
-                dpg.add_spacer(height=8)
+                    dpg.add_spacer(height=6)
+                    dpg.add_text("", tag="status_text", wrap=360)
+                
+                with dpg.child_window(width=-1, height=-1, border=True):
+                    dpg.add_button(label="Render Selected File", width=200, callback=lambda: plot_selected_file(state))
+                    dpg.add_spacer(height=8)
 
-                with dpg.plot(label="Simple VSM Plot", tag="main_plot", height=-1, width=-1):
+                    with dpg.plot(label="Simple VSM Plot", tag="main_plot", height=-1, width=-1):
 
-                    dpg.add_plot_legend()
-                    dpg.add_plot_axis(dpg.mvXAxis, label="X", tag="x_axis")
-                    dpg.add_plot_axis(dpg.mvYAxis, label="Moment (emu)", tag="y_axis")
+                        dpg.add_plot_legend(location=dpg.mvPlot_Location_NorthEast)
+                        dpg.add_plot_axis(dpg.mvXAxis, label="X", tag="x_axis")
+                        dpg.add_plot_axis(dpg.mvYAxis, label="Moment (emu)", tag="y_axis")
 
+
+    
+    dpg.set_primary_window("Main", True)   # 关键！设置为 primary window
     dpg.setup_dearpygui()
     refresh_files(state)
     dpg.show_viewport()
@@ -217,13 +261,20 @@ def plot_selected_file(state: VisualizerState) -> None:
         )
         return
 
+
+
     ## Re-generate the plot
     children = dpg.get_item_children("main_plot", 1)
     if children:
         for child in children:
             dpg.delete_item(child)
-    dpg.add_plot_legend(parent="main_plot")
-    dpg.add_plot_axis(dpg.mvXAxis, label="X", parent="main_plot", tag="x_axis")
+    print(modes)
+    dpg.add_plot_legend(parent="main_plot",location=dpg.mvPlot_Location_NorthEast)
+    if modes == {"MT"}:
+        dpg.add_plot_axis(dpg.mvXAxis, label="Temperature (K)", parent="main_plot", tag="x_axis")
+    elif modes == {'MH'}:
+        dpg.add_plot_axis(dpg.mvXAxis, label="Magnetic Field (Oe)", parent="main_plot", tag="x_axis")
+
     dpg.add_plot_axis(dpg.mvYAxis, label="Moment (emu)", parent="main_plot", tag="y_axis")
     
     import math
