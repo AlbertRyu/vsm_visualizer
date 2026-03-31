@@ -1,0 +1,79 @@
+name: Build & Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: macos-latest
+            artifact_name: VSM_Visualizer.app
+            artifact_path: dist/VSM_Visualizer.app
+            zip_name: VSM_Visualizer_macOS.zip
+          - os: windows-latest
+            artifact_name: VSM_Visualizer.exe
+            artifact_path: dist/VSM_Visualizer.exe
+            zip_name: VSM_Visualizer_Windows.zip
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Build (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          uv run nuitka \
+            --standalone \
+            --macos-create-app-bundle \
+            --macos-app-name="VSM Visualizer" \
+            --macos-app-icon=src/vsm_visualizer/assets/vsm_logo.ico \
+            --include-package=vsm_visualizer \
+            --include-data-dir=src/vsm_visualizer/assets=vsm_visualizer/assets \
+            --include-package=dearpygui \
+            --include-package=dearpygui_ext \
+            --python-flag=no_site \
+            --output-filename=VSM_Visualizer \
+            --output-dir=dist \
+            app.py
+
+      - name: Build (Windows)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          uv run nuitka \
+            --onefile \
+            --windows-icon-from-ico=src/vsm_visualizer/assets/vsm_logo.ico \
+            --include-package=vsm_visualizer \
+            --include-data-dir=src/vsm_visualizer/assets=vsm_visualizer/assets \
+            --include-package=dearpygui \
+            --include-package=dearpygui_ext \
+            --python-flag=no_site \
+            --output-filename=VSM_Visualizer \
+            --output-dir=dist \
+            app.py
+
+      - name: Zip artifact (macOS)
+        if: runner.os == 'macOS'
+        run: zip -r ${{ matrix.zip_name }} "${{ matrix.artifact_path }}"
+
+      - name: Zip artifact (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: Compress-Archive -Path "${{ matrix.artifact_path }}" -DestinationPath "${{ matrix.zip_name }}"
+
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ matrix.zip_name }}
