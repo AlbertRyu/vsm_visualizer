@@ -88,7 +88,13 @@ jobs:
         shell: pwsh
         run: Compress-Archive -Path "${{ matrix.artifact_path }}" -DestinationPath "${{ matrix.zip_name }}"
 
+      - name: Zip example data (macOS only)
+        if: runner.os == 'macOS'
+        run: ditto -c -k --sequesterRsrc --keepParent example_data example_data.zip
+
       - name: Upload to Release
         uses: softprops/action-gh-release@v2
         with:
-          files: ${{ matrix.zip_name }}
+          files: |
+            ${{ matrix.zip_name }}
+            ${{ runner.os == 'macOS' && 'example_data.zip' || '' }}

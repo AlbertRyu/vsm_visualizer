@@ -8,18 +8,20 @@ No installation required. Download the latest release for your platform from the
 
 | Platform | File |
 | --- | --- |
-| Windows | `VSM_Visualizer.exe` |
-| macOS | `VSM_Visualizer.app` |
+| Windows | `vsm_visualizer.exe` |
+| macOS | `vsm_visualizer.app` |
 
-1. Copy the executable into your data folder (the one containing `.dat` / `.data` files).
+1. Copy the executable into your data folder (the one containing `.dat` files).
 2. Double-click to launch — the app opens with that folder as the working directory.
 3. Select files and click **Render Selected File** to plot.
+
+Not sure where to start? Download `example_data.zip` from the same Release page, extract it anywhere, and place the executable inside and try it out.
 
 ---
 
 ## Features
 
-- Browse `.dat` / `.data` files recursively from a working directory
+- Browse `.dat` files recursively from a working directory
 - Auto-detect measurement mode: **MT** (Moment vs. Temperature) or **MH** (Moment vs. Magnetic Field)
 - Select and overlay multiple curves in a single interactive plot
 - Smart legend labels — strips common path prefix so labels stay readable
@@ -29,7 +31,7 @@ No installation required. Download the latest release for your platform from the
 
 ## Supported Data Format
 
-PPMS VSM `.DAT` files with a `[Data]` section header. The following columns are parsed:
+PPMS VSM `.dat` files with a `[Data]` section header. The following columns are parsed:
 
 | Column | Unit |
 | --- | --- |
@@ -59,15 +61,9 @@ python -m pip install -r requirements.txt
 python -m vsm_visualizer <path/to/data/directory>
 ```
 
-Or point it at the bundled example data:
-
-```bash
-python -m vsm_visualizer example_data/b-axis
-```
-
 ### Workflow
 
-1. On launch, the left panel lists all `.dat` / `.data` files found recursively under the working directory.
+1. On launch, the left panel lists all `.dat` files found recursively under the working directory.
 2. Each file shows its size and an auto-detected **MT / MH** radio button — switch it if the auto-detection is wrong.
 3. Select one or more files (same mode only) using the checkboxes.
 4. Click **Render Selected File** to plot. Axes and legend update automatically.
