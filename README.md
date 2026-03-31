@@ -2,6 +2,21 @@
 
 A lightweight desktop application for visualizing and comparing PPMS VSM (Vibrating Sample Magnetometer) measurement data.
 
+## Quick Start
+
+No installation required. Download the latest release for your platform from the [Releases](../../releases) page.
+
+| Platform | File |
+| --- | --- |
+| Windows | `VSM_Visualizer.exe` |
+| macOS | `VSM_Visualizer.app` |
+
+1. Copy the executable into your data folder (the one containing `.dat` / `.data` files).
+2. Double-click to launch — the app opens with that folder as the working directory.
+3. Select files and click **Render Selected File** to plot.
+
+---
+
 ## Features
 
 - Browse `.dat` / `.data` files recursively from a working directory
@@ -67,20 +82,9 @@ vsm_visualizer/
 │   ├── ui.py                  # DearPyGui application & plotting logic
 │   └── vsm_data_processor.py  # PPMS data parser (Sample / Measurement)
 ├── example_data/
-│   ├── axis-1/                # MH and MT data (axis 1)
-│   ├── axis-2/                # MH and MT data (axis 2)
-│   └── b-axis/                # MH and MT data (B-axis), incl. ZFC/FC curves
 ├── requirements.txt
 └── LICENSE
 ```
-
-## Example Data
-
-The `example_data/` directory contains real PPMS VSM measurements along different crystallographic axes, including:
-
-- ZFC / FC M-T curves at various applied fields (1000 Oe, 18 000 Oe, 22 000 Oe)
-- M-H hysteresis loops at temperatures from 2 K to 30 K
-- High-field M-T sweeps at 8 T, 10 T, and 12 T (B-axis)
 
 ## License
 

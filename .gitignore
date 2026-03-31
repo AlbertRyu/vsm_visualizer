@@ -7,3 +7,5 @@ __pycache__/
 *.seq
 # Python egg-info
 *.egg-info/
+dist/
+*.app
