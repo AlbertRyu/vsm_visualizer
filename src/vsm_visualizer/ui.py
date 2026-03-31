@@ -3,9 +3,18 @@ from __future__ import annotations
 from pathlib import Path
 import dearpygui.dearpygui as dpg
 
+import sys
 from .vsm_data_processor import Sample, Measurement
 import vsm_visualizer
 from dearpygui_ext import themes
+
+
+def _assets_dir() -> Path:
+    # When compiled by Nuitka the package has no real __file__ directory;
+    # assets are placed next to the executable under assets/.
+    if "__compiled__" in globals():
+        return Path(sys.argv[0]).resolve().parent / "assets"
+    return Path(vsm_visualizer.__file__).parent / "assets"
 
 import ctypes
 import platform
@@ -32,7 +41,7 @@ class VisualizerState:
         self.theme_state = "light"
 
 
-ICON_PATH = Path(vsm_visualizer.__file__).parent / "assets" / "vsm_logo.ico"
+ICON_PATH = _assets_dir() / "vsm_logo.ico"
 print(f"Icon detected {ICON_PATH}")
 
 
@@ -48,7 +57,7 @@ def run_app(start_dir: Path) -> None:
         large_icon=str(ICON_PATH),
     )
 
-    FONT_PATH = Path(vsm_visualizer.__file__).parent / "assets" / "Roboto-Medium.ttf"
+    FONT_PATH = _assets_dir() / "Roboto-Medium.ttf"
     with dpg.font_registry():
         default_font = dpg.add_font(str(FONT_PATH), int(13 * dpi_scale))
     dpg.bind_font(default_font)

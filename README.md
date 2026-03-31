@@ -78,11 +78,15 @@ python -m vsm_visualizer example_data/b-axis
 ```text
 vsm_visualizer/
 ├── src/vsm_visualizer/
+│   ├── assets/                # Icon and font bundled into the app
 │   ├── __init__.py
 │   ├── ui.py                  # DearPyGui application & plotting logic
 │   └── vsm_data_processor.py  # PPMS data parser (Sample / Measurement)
-├── example_data/
-├── requirements.txt
+├── .github/workflows/
+│   └── build.yml              # GitHub Actions: auto-build & release
+├── example_data/              # Sample PPMS VSM measurements
+├── app.py                     # Entry point
+├── pyproject.toml
 └── LICENSE
 ```
 

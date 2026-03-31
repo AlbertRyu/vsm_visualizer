@@ -40,7 +40,7 @@ jobs:
             --macos-app-name="VSM Visualizer" \
             --macos-app-icon=src/vsm_visualizer/assets/vsm_logo.ico \
             --include-package=vsm_visualizer \
-            --include-data-dir=src/vsm_visualizer/assets=vsm_visualizer/assets \
+            --include-data-dir=src/vsm_visualizer/assets=assets \
             --include-package=dearpygui \
             --include-package=dearpygui_ext \
             --python-flag=no_site \
@@ -57,7 +57,7 @@ jobs:
             --onefile \
             --windows-icon-from-ico=src/vsm_visualizer/assets/vsm_logo.ico \
             --include-package=vsm_visualizer \
-            --include-data-dir=src/vsm_visualizer/assets=vsm_visualizer/assets \
+            --include-data-dir=src/vsm_visualizer/assets=assets \
             --include-package=dearpygui \
             --include-package=dearpygui_ext \
             --python-flag=no_site \
