@@ -66,9 +66,13 @@ jobs:
             --assume-yes-for-downloads \
             app.py
 
+      - name: Rename app bundle (macOS)
+        if: runner.os == 'macOS'
+        run: mv dist/app.app dist/VSM_Visualizer.app
+
       - name: Zip artifact (macOS)
         if: runner.os == 'macOS'
-        run: zip -r ${{ matrix.zip_name }} "${{ matrix.artifact_path }}"
+        run: ditto -c -k --sequesterRsrc --keepParent dist/VSM_Visualizer.app "${{ matrix.zip_name }}"
 
       - name: Zip artifact (Windows)
         if: runner.os == 'Windows'
