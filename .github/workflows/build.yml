@@ -11,13 +11,13 @@ jobs:
       matrix:
         include:
           - os: macos-latest
-            artifact_name: VSM_Visualizer.app
-            artifact_path: dist/VSM_Visualizer.app
-            zip_name: VSM_Visualizer_macOS.zip
+            artifact_name: vsm_visualizer.app
+            artifact_path: dist/vsm_visualizer.app
+            zip_name: vsm_visualizer_macOS.zip
           - os: windows-latest
-            artifact_name: VSM_Visualizer.exe
-            artifact_path: dist/VSM_Visualizer.exe
-            zip_name: VSM_Visualizer_Windows.zip
+            artifact_name: vsm_visualizer.exe
+            artifact_path: dist/vsm_visualizer.exe
+            zip_name: vsm_visualizer_Windows.zip
 
     runs-on: ${{ matrix.os }}
 
@@ -30,6 +30,15 @@ jobs:
 
       - name: Install dependencies
         run: uv sync
+
+      - name: Cache Nuitka downloads & ccache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/Nuitka
+            ~/Library/Caches/Nuitka
+            ~\AppData\Local\Nuitka\Nuitka\Cache
+          key: nuitka-${{ runner.os }}-${{ hashFiles('uv.lock') }}
 
       - name: Build (macOS)
         if: runner.os == 'macOS'
@@ -44,7 +53,7 @@ jobs:
             --include-package=dearpygui \
             --include-package=dearpygui_ext \
             --python-flag=no_site \
-            --output-filename=VSM_Visualizer \
+            --output-filename=vsm_visualizer \
             --output-dir=dist \
             --assume-yes-for-downloads \
             app.py
@@ -61,18 +70,18 @@ jobs:
             --include-package=dearpygui \
             --include-package=dearpygui_ext \
             --python-flag=no_site \
-            --output-filename=VSM_Visualizer \
+            --output-filename=vsm_visualizer \
             --output-dir=dist \
             --assume-yes-for-downloads \
             app.py
 
       - name: Rename app bundle (macOS)
         if: runner.os == 'macOS'
-        run: mv dist/app.app dist/VSM_Visualizer.app
+        run: mv dist/app.app dist/vsm_visualizer.app
 
       - name: Zip artifact (macOS)
         if: runner.os == 'macOS'
-        run: ditto -c -k --sequesterRsrc --keepParent dist/VSM_Visualizer.app "${{ matrix.zip_name }}"
+        run: ditto -c -k --sequesterRsrc --keepParent dist/vsm_visualizer.app "${{ matrix.zip_name }}"
 
       - name: Zip artifact (Windows)
         if: runner.os == 'Windows'
