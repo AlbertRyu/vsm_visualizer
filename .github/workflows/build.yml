@@ -46,6 +46,7 @@ jobs:
             --python-flag=no_site \
             --output-filename=VSM_Visualizer \
             --output-dir=dist \
+            --assume-yes-for-downloads \
             app.py
 
       - name: Build (Windows)
@@ -62,6 +63,7 @@ jobs:
             --python-flag=no_site \
             --output-filename=VSM_Visualizer \
             --output-dir=dist \
+            --assume-yes-for-downloads \
             app.py
 
       - name: Zip artifact (macOS)

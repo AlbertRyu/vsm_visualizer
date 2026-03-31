@@ -22,5 +22,5 @@ package = true
 [dependency-groups]
 dev = [
     "imageio>=2.37.3",
-    "nuitka>=4.0.7",
+    "nuitka[onefile]>=4.0.7",
 ]
