@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """Build self-contained vsm_visualizer.html with Plotly.js inlined."""
 
+import base64
 import pathlib
 import urllib.request
 
 PLOTLY_URL = "https://cdn.plot.ly/plotly-2.35.2.min.js"
+ICON_PATH = pathlib.Path(__file__).parent.parent / "src/vsm_visualizer/assets/vsm_logo.ico"
 OUT = pathlib.Path(__file__).parent.parent / "vsm_visualizer.html"
 
 APP_HTML = r"""<!DOCTYPE html>
@@ -13,6 +15,7 @@ APP_HTML = r"""<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VSM Visualizer</title>
+<link rel="icon" type="image/x-icon" href="__FAVICON__">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -534,7 +537,10 @@ def main():
     # Escape </script> inside the inlined JS to prevent early tag termination
     plotly_js = plotly_js.replace("</script>", r"<\/script>")
 
-    html = APP_HTML.replace("__PLOTLY_JS__", plotly_js)
+    favicon_b64 = base64.b64encode(ICON_PATH.read_bytes()).decode("ascii")
+    favicon_uri = f"data:image/x-icon;base64,{favicon_b64}"
+
+    html = APP_HTML.replace("__PLOTLY_JS__", plotly_js).replace("__FAVICON__", favicon_uri)
     OUT.write_text(html, encoding="utf-8")
     size_mb = OUT.stat().st_size / 1024 / 1024
     print(f"Built {OUT.name} ({size_mb:.1f} MB)")
