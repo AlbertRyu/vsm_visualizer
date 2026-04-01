@@ -8,6 +8,20 @@ from .vsm_data_processor import Sample, Measurement
 import vsm_visualizer
 from dearpygui_ext import themes
 
+import ctypes
+import platform
+
+if platform.system() == "Windows":
+    try:
+        ctypes.windll.shcore.SetProcessDpiAwareness(1)  # type: ignore[attr-defined]
+        dpi_scale = ctypes.windll.user32.GetDpiForSystem() / 96.0  # type: ignore[attr-defined]
+    except Exception:
+        dpi_scale = 1.0
+else:
+    dpi_scale = 1.0
+
+print("DPI scale:", dpi_scale)  # 通常是1.0 / 1.25 / 1.5 / 2.0
+
 
 def _assets_dir() -> Path:
     # When compiled by Nuitka the package has no real __file__ directory;
@@ -15,20 +29,6 @@ def _assets_dir() -> Path:
     if "__compiled__" in globals():
         return Path(sys.argv[0]).resolve().parent / "assets"
     return Path(vsm_visualizer.__file__).parent / "assets"
-
-import ctypes
-import platform
-
-if platform.system() == "Windows":
-    try:
-        ctypes.windll.shcore.SetProcessDpiAwareness(1)
-        dpi_scale = ctypes.windll.user32.GetDpiForSystem() / 96.0
-    except Exception:
-        dpi_scale = 1.0
-else:
-    dpi_scale = 1.0
-
-print("DPI scale:", dpi_scale)  # 通常是1.0 / 1.25 / 1.5 / 2.0
 
 
 class VisualizerState:

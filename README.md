@@ -46,7 +46,6 @@ Place the executable inside your data folder and double-click to launch.
 - Smart legend labels — strips common path prefix so labels stay readable
 - Moment normalized by sample mass
 - Light / Dark theme toggle
-- Handles UTF-8 and ISO-8859-1 encoded PPMS data files
 
 ## Supported Data Format
 
@@ -56,7 +55,7 @@ PPMS VSM `.dat` files with a `[Data]` section header. The following columns are 
 | --- | --- |
 | Temperature | K |
 | Magnetic Field | Oe |
-| Moment | emu (normalized by mass if provided) |
+| Moment | emu |
 | M. Std. Err. | emu |
 
 ## Run from Source
