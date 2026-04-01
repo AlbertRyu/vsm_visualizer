@@ -8,7 +8,7 @@ Download the latest release from the [Releases](../../releases) page.
 
 ### Option 1 — Web App (Recommended)
 
-**[Launch VSM Visualizer](https://albertryu.github.io/vsm_visualizer/)** — hosted on GitHub Pages, always up to date.
+**[Launch VSM Visualizer](http://ryunosuke.tech/vsm_visualizer/)** — hosted on GitHub Pages, always up to date.
 
 Requires a **Chromium-based browser** (Chrome, Edge, Opera, Brave, etc.). Firefox and Safari are not supported.
 
