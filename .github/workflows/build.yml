@@ -5,6 +5,11 @@ on:
     tags:
       - "v*"
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   build-web:
     runs-on: ubuntu-latest
@@ -15,6 +20,22 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: vsm_visualizer.html
+      - name: Prepare Pages artifact
+        run: mkdir _site && cp vsm_visualizer.html _site/index.html
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build-web
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
 
   build:
     if: false

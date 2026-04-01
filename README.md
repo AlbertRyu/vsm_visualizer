@@ -1,21 +1,35 @@
 # VSM Visualizer
 
-A lightweight desktop application for visualizing and comparing PPMS VSM (Vibrating Sample Magnetometer) measurement data.
+A lightweight tool for visualizing and comparing PPMS VSM (Vibrating Sample Magnetometer) measurement data.
 
 ## Quick Start
 
-No installation required. Download the latest release for your platform from the [Releases](../../releases) page.
+Download the latest release from the [Releases](../../releases) page.
+
+### Option 1 — Web App (Recommended)
+
+Download `vsm_visualizer.html` and open it in any **Chromium-based browser** (Chrome, Edge, Opera, Brave, etc.). Firefox and Safari are not supported.
+
+1. Click **Open Folder** and select your data folder.
+2. Select one or more `.dat` files and click **Render Selected**.
+3. No installation. No internet required after download.
+
+> **Not sure where to start?** Also download `example_data.zip` from the same Release page, extract it, and open the HTML file in one of the subfolders.
+
+---
+
+### Option 2 — Desktop App
+
+A native desktop build is available for Windows and macOS.
 
 | Platform | File |
 | --- | --- |
-| Windows | `vsm_visualizer.exe` |
-| macOS | `vsm_visualizer.app` |
+| Windows | `vsm_visualizer_Windows.zip` → `vsm_visualizer.exe` |
+| macOS | `vsm_visualizer_macOS.zip` → `vsm_visualizer.app` |
 
-1. Copy the executable into your data folder (the one containing `.dat` files).
-2. Double-click to launch — the app opens with that folder as the working directory.
-3. Select files and click **Render Selected File** to plot.
+Place the executable inside your data folder and double-click to launch.
 
-Not sure where to start? Download `example_data.zip` from the same Release page, extract it anywhere, and place the executable inside and try it out.
+> ⚠️ **Antivirus warning:** The Windows executable is compiled from Python and is very likely to be flagged as malware by Windows Defender or other antivirus software. This is a known false positive for Python-compiled binaries. If you encounter this, use the Web App instead.
 
 ---
 
@@ -40,50 +54,28 @@ PPMS VSM `.dat` files with a `[Data]` section header. The following columns are 
 | Moment | emu (normalized by mass if provided) |
 | M. Std. Err. | emu |
 
-## Installation
+## Run from Source
 
 ```bash
-python -m pip install -r requirements.txt
+pip install -r requirements.txt
+python app.py <path/to/data/directory>
 ```
-
-**Dependencies:**
-
-| Package | Version |
-| --- | --- |
-| dearpygui | ≥ 1.11.1 |
-| dearpygui-ext | latest |
-| matplotlib | ≥ 3.8.0 |
-| numpy | ≥ 1.24.0 |
-
-## Usage
-
-```bash
-python -m vsm_visualizer <path/to/data/directory>
-```
-
-### Workflow
-
-1. On launch, the left panel lists all `.dat` files found recursively under the working directory.
-2. Each file shows its size and an auto-detected **MT / MH** radio button — switch it if the auto-detection is wrong.
-3. Select one or more files (same mode only) using the checkboxes.
-4. Click **Render Selected File** to plot. Axes and legend update automatically.
-5. Use **Refresh Files** to reload after adding new files, and **Toggle Theme** to switch between light and dark mode.
 
 ## Project Structure
 
 ```text
 vsm_visualizer/
 ├── src/vsm_visualizer/
-│   ├── assets/                # Icon and font bundled into the app
-│   ├── __init__.py
+│   ├── assets/                # Icon and font
 │   ├── ui.py                  # DearPyGui application & plotting logic
 │   └── vsm_data_processor.py  # PPMS data parser (Sample / Measurement)
+├── web/
+│   └── build_web.py           # Builds self-contained vsm_visualizer.html
 ├── .github/workflows/
 │   └── build.yml              # GitHub Actions: auto-build & release
 ├── example_data/              # Sample PPMS VSM measurements
 ├── app.py                     # Entry point
-├── pyproject.toml
-└── LICENSE
+└── pyproject.toml
 ```
 
 ## License
