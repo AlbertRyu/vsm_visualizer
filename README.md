@@ -8,13 +8,18 @@ Download the latest release from the [Releases](../../releases) page.
 
 ### Option 1 — Web App (Recommended)
 
-Download `vsm_visualizer.html` and open it in any **Chromium-based browser** (Chrome, Edge, Opera, Brave, etc.). Firefox and Safari are not supported.
+**[Launch VSM Visualizer](https://ryunosuke.tech/vsm_visualizer/)** — hosted on GitHub Pages, always up to date.
+
+Requires a **Chromium-based browser** (Chrome, Edge, Opera, Brave, etc.). Firefox and Safari are not supported.
 
 1. Click **Open Folder** and select your data folder.
 2. Select one or more `.dat` files and click **Render Selected**.
-3. No installation. No internet required after download.
 
-> **Not sure where to start?** Also download `example_data.zip` from the same Release page, extract it, and open the HTML file in one of the subfolders.
+> **Privacy:** All data processing happens entirely in your browser. No files or data are ever uploaded or transmitted anywhere.
+>
+> **Prefer to run fully offline?** Download `vsm_visualizer.html` from the [Releases](../../releases) page and open it locally — identical functionality, no internet required.
+>
+> **Not sure where to start?** Download `example_data.zip` from the Releases page, extract it anywhere, and open the app inside one of the subfolders.
 
 ---
 
