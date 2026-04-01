@@ -17,16 +17,23 @@ APP_HTML = r"""<!DOCTYPE html>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #ffffff; --bg-panel: #fafafa; --bg-header: #f0f0f0;
-  --bg-btn: #e0e0e0; --bg-btn-hover: #cacaca;
-  --fg: #222222; --fg-dim: #666666; --border: #dddddd;
-  --row-hover: #f0f4ff; --row-selected: #dce8ff;
+  --bg: #ffffff; --bg-panel: #f7f7f8; --bg-header: #efefef;
+  --bg-btn: #e4e4e7; --bg-btn-hover: #d4d4d8;
+  --fg: #18181b; --fg-dim: #71717a; --fg-muted: #a1a1aa;
+  --border: #e4e4e7; --border-strong: #d4d4d8;
+  --row-hover: #f0f4ff; --row-selected: #dbeafe;
+  --accent: #2563eb; --accent-hover: #1d4ed8;
+  --accent-fg: #ffffff;
+  --radius: 5px;
 }
 body.dark {
-  --bg: #1e1e1e; --bg-panel: #252526; --bg-header: #2d2d2d;
-  --bg-btn: #3c3c3c; --bg-btn-hover: #505050;
-  --fg: #cccccc; --fg-dim: #888888; --border: #444444;
-  --row-hover: #2a2d3a; --row-selected: #1a3a5c;
+  --bg: #18181b; --bg-panel: #1e1e21; --bg-header: #27272a;
+  --bg-btn: #3f3f46; --bg-btn-hover: #52525b;
+  --fg: #e4e4e7; --fg-dim: #a1a1aa; --fg-muted: #71717a;
+  --border: #3f3f46; --border-strong: #52525b;
+  --row-hover: #1e2a3a; --row-selected: #1e3a5f;
+  --accent: #3b82f6; --accent-hover: #60a5fa;
+  --accent-fg: #ffffff;
 }
 
 body {
@@ -43,26 +50,27 @@ body {
 #toolbar {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
+  gap: 6px;
+  padding: 7px 10px;
   background: var(--bg-header);
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
 #dir-label {
   flex: 1;
-  color: var(--fg-dim);
-  font-size: 12px;
+  color: var(--fg-muted);
+  font-size: 11.5px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  padding: 0 4px;
 }
 
 #main { display: flex; flex: 1; overflow: hidden; }
 
 #left {
-  width: 380px;
-  min-width: 240px;
+  width: 400px;
+  min-width: 260px;
   display: flex;
   flex-direction: column;
   border-right: 1px solid var(--border);
@@ -74,71 +82,131 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 12px;
+  padding: 7px 10px;
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
+  background: var(--bg-header);
 }
 
-#table-wrap { flex: 1; overflow-y: auto; }
+#table-wrap {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+#table-wrap::-webkit-scrollbar { width: 6px; }
+#table-wrap::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+#table-wrap::-webkit-scrollbar-track { background: transparent; }
 
 table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-col.c-size { width: 58px; }
-col.c-mode { width: 82px; }
-col.c-sel  { width: 32px; }
+col.c-size { width: 62px; }
+col.c-mode { width: 84px; }
+col.c-sel  { width: 34px; }
 
 th {
   background: var(--bg-header);
-  padding: 5px 8px;
+  padding: 6px 8px;
   text-align: left;
   font-weight: 600;
-  border-bottom: 2px solid var(--border);
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fg-dim);
+  border-bottom: 1px solid var(--border-strong);
   position: sticky;
   top: 0;
   z-index: 1;
 }
 td {
-  padding: 4px 8px;
+  padding: 5px 8px;
   border-bottom: 1px solid var(--border);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: 12.5px;
 }
 tr:hover td { background: var(--row-hover); }
 tr.selected td { background: var(--row-selected); }
+tr.selected td.td-name .fname { color: var(--accent); }
 
-.mode-group { display: flex; gap: 6px; align-items: center; font-size: 12px; }
-.mode-group label { display: flex; align-items: center; gap: 2px; cursor: pointer; }
+/* file name cell: dim directory, emphasise filename */
+.td-name { line-height: 1.35; }
+.fdir  { color: var(--fg-muted); font-size: 11px; display: block; }
+.fname { color: var(--fg); font-size: 12.5px; }
+
+/* mode radio */
+.mode-group { display: flex; gap: 8px; align-items: center; }
+.mode-group label {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 12px;
+  cursor: pointer;
+  color: var(--fg-dim);
+  transition: color 0.1s;
+}
+.mode-group label:has(input:checked) { color: var(--accent); font-weight: 600; }
+.mode-group input[type=radio] { accent-color: var(--accent); cursor: pointer; }
+
+/* select-all / row checkbox */
+input[type=checkbox] { accent-color: var(--accent); cursor: pointer; width: 14px; height: 14px; }
 
 #status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   padding: 5px 10px;
-  font-size: 12px;
+  font-size: 11.5px;
   color: var(--fg-dim);
   border-top: 1px solid var(--border);
-  min-height: 26px;
+  min-height: 28px;
+  flex-shrink: 0;
+  background: var(--bg-header);
+}
+#status::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--fg-muted);
   flex-shrink: 0;
 }
+#status.ready::before  { background: #22c55e; }
+#status.busy::before   { background: #f59e0b; }
+#status.error::before  { background: #ef4444; }
 
 #plot { flex: 1; }
 
 button {
-  padding: 5px 12px;
-  font-size: 13px;
+  padding: 5px 11px;
+  font-size: 12.5px;
   font-family: inherit;
   cursor: pointer;
   background: var(--bg-btn);
   color: var(--fg);
-  border: 1px solid var(--border);
-  border-radius: 4px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
   white-space: nowrap;
+  transition: background 0.12s, border-color 0.12s;
 }
 button:hover { background: var(--bg-btn-hover); }
-button:active { opacity: 0.8; }
+button:active { opacity: 0.75; }
+button:disabled { opacity: 0.4; cursor: default; }
+
+/* primary button */
+button.primary {
+  background: var(--accent);
+  color: var(--accent-fg);
+  border-color: var(--accent);
+}
+button.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
 </style>
 </head>
 <body>
 
 <div id="toolbar">
-  <button id="btn-open">Open Folder</button>
+  <button id="btn-open" class="primary">Open Folder</button>
   <button id="btn-refresh" disabled>Refresh</button>
   <span id="dir-label">No folder selected</span>
   <button id="btn-theme">Toggle Theme</button>
@@ -167,7 +235,7 @@ button:active { opacity: 0.8; }
 
   <div id="right">
     <div id="right-toolbar">
-      <button id="btn-plot" disabled>Render Selected</button>
+      <button id="btn-plot" class="primary" disabled>Render Selected</button>
     </div>
     <div id="plot"></div>
   </div>
@@ -297,7 +365,7 @@ async function refreshFiles() {
   selectAll.checked = false;
   tbody.innerHTML = '';
   btnPlot.disabled = true;
-  setStatus('Scanning…');
+  setStatus('Scanning…', 'busy');
 
   let count = 0;
   for await (const entry of walkDir(state.dirHandle)) {
@@ -315,7 +383,7 @@ async function refreshFiles() {
     return a.path.localeCompare(b.path, undefined, { sensitivity: 'base' });
   });
   renderTable();
-  setStatus('Detected ' + state.files.length + ' data file' + (state.files.length !== 1 ? 's' : '') + '.');
+  setStatus('Detected ' + state.files.length + ' data file' + (state.files.length !== 1 ? 's' : '') + '.', 'ready');
 }
 
 // ── Render table ───────────────────────────────────────────────────────────
@@ -326,8 +394,19 @@ function renderTable() {
     tr.dataset.path = f.path;
 
     const tdName = document.createElement('td');
+    tdName.className = 'td-name';
     tdName.title = f.path;
-    tdName.textContent = f.path;
+    const slash = f.path.lastIndexOf('/');
+    if (slash !== -1) {
+      const fdir = document.createElement('span');
+      fdir.className = 'fdir';
+      fdir.textContent = f.path.slice(0, slash + 1);
+      tdName.appendChild(fdir);
+    }
+    const fname = document.createElement('span');
+    fname.className = 'fname';
+    fname.textContent = f.path.slice(slash + 1);
+    tdName.appendChild(fname);
     tr.appendChild(tdName);
 
     const tdSize = document.createElement('td');
@@ -394,7 +473,7 @@ function renderPlot() {
   const modes = new Set(paths.map(function(p) { return state.fileModes[p]; }));
 
   if (modes.size > 1) {
-    setStatus('Error: mixed modes (MT & MH). Select files of the same mode.');
+    setStatus('Error: mixed modes (MT & MH). Select files of the same mode.', 'error');
     return;
   }
 
@@ -434,10 +513,13 @@ function renderPlot() {
     hovermode: 'closest',
   }, { responsive: true });
 
-  setStatus('Plotted ' + paths.length + ' file' + (paths.length !== 1 ? 's' : '') + ' (' + mode + ' mode).');
+  setStatus('Plotted ' + paths.length + ' file' + (paths.length !== 1 ? 's' : '') + ' (' + mode + ' mode).', 'ready');
 }
 
-function setStatus(msg) { statusEl.textContent = msg; }
+function setStatus(msg, type) {
+  statusEl.textContent = msg;
+  statusEl.className = type || '';
+}
 </script>
 </body>
 </html>
