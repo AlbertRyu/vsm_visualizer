@@ -9,4 +9,5 @@ __pycache__/
 # Python egg-info
 *.egg-info/
 dist/
+vsm_visualizer.html
 *.app
