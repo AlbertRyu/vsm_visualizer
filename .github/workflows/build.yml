@@ -38,7 +38,7 @@ jobs:
         uses: actions/deploy-pages@v4
 
   build:
-    if: false
+    if: True
     strategy:
       matrix:
         include:
