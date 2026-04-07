@@ -520,9 +520,9 @@ function renderPlot() {
     paper_bgcolor: bgColor,
     plot_bgcolor:  bgColor,
     font: { color: fgColor, family: "'Segoe UI', system-ui, Arial, sans-serif", size: 12 },
-    margin: { l: 65, r: 20, t: 20, b: 55 },
-    xaxis: { title: mode === 'MT' ? 'Temperature (K)' : 'Magnetic Field (Oe)', gridcolor: grid, linecolor: grid },
-    yaxis: { title: 'Moment (emu)', gridcolor: grid, linecolor: grid },
+    margin: { l: 80, r: 40, t: 40, b: 80 },
+    xaxis: { title: { text: mode === 'MT' ? 'Temperature (K)' : 'Magnetic Field (Oe)', standoff: 15 }, gridcolor: grid, linecolor: grid },
+    yaxis: { title: { text: 'Moment (emu)', standoff: 15 }, gridcolor: grid, linecolor: grid },
     legend: { x: 1, xanchor: 'right', y: 1 },
     hovermode: 'closest',
   }, { responsive: true });
