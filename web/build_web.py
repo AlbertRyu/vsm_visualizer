@@ -76,9 +76,18 @@ body {
   min-width: 260px;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid var(--border);
   background: var(--bg-panel);
   flex-shrink: 0;
+}
+#divider {
+  width: 5px;
+  cursor: col-resize;
+  background: var(--border);
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+#divider:hover, #divider.dragging {
+  background: var(--border-strong);
 }
 #right { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 #right-toolbar {
@@ -235,6 +244,8 @@ button.primary:hover { background: var(--accent-hover); border-color: var(--acce
     </div>
     <div id="status">Open a folder to begin.</div>
   </div>
+
+  <div id="divider"></div>
 
   <div id="right">
     <div id="right-toolbar">
@@ -523,6 +534,36 @@ function setStatus(msg, type) {
   statusEl.textContent = msg;
   statusEl.className = type || '';
 }
+
+// ── Draggable divider ──────────────────────────────────────────────────────
+(function() {
+  const divider = document.getElementById('divider');
+  const left    = document.getElementById('left');
+  let dragging = false, startX = 0, startW = 0;
+
+  divider.addEventListener('mousedown', function(e) {
+    dragging = true;
+    startX = e.clientX;
+    startW = left.offsetWidth;
+    divider.classList.add('dragging');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+  });
+
+  document.addEventListener('mousemove', function(e) {
+    if (!dragging) return;
+    const newW = Math.max(180, Math.min(startW + e.clientX - startX, window.innerWidth - 200));
+    left.style.width = newW + 'px';
+  });
+
+  document.addEventListener('mouseup', function() {
+    if (!dragging) return;
+    dragging = false;
+    divider.classList.remove('dragging');
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+  });
+})();
 </script>
 </body>
 </html>
