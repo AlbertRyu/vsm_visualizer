@@ -525,7 +525,7 @@ function renderPlot() {
     yaxis: { title: { text: 'Moment (emu)', standoff: 15 }, gridcolor: grid, linecolor: grid },
     legend: { x: 1, xanchor: 'right', y: 1 },
     hovermode: 'closest',
-  }, { responsive: true });
+  }, { responsive: true, edits: { legendPosition: true } });
 
   setStatus('Plotted ' + paths.length + ' file' + (paths.length !== 1 ? 's' : '') + ' (' + mode + ' mode).', 'ready');
 }
