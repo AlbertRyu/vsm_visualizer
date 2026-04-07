@@ -112,7 +112,7 @@ body {
 
 table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 col.c-size { width: 62px; }
-col.c-mode { width: 84px; }
+col.c-mode { width: 100px; }
 col.c-sel  { width: 34px; }
 
 th {
